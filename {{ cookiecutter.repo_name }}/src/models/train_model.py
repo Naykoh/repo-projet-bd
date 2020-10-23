@@ -1,8 +1,17 @@
 import pickle
 import pandas as pd
+import numpy as np
 from pathlib import Path
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report
+
+# Algorithms, from the easiest to the hardest to intepret.r
+from xgboost.sklearn import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier
+#from features.build_features import get_features
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -12,46 +21,136 @@ else:
     PROTOCOL = 2
 
 
+
+def get_features(app_train):
+    num_features=[]
+    cat_features=[]
+    for i in list(zip(app_train.columns,app_train.dtypes)):
+        if (i[1] != 'object') :
+            num_features.append(i[0])
+        else : 
+            cat_features.append(i[0])
+    num_features.remove("TARGET")
+    return num_features, cat_features
+
 def fetch_processed(data_path):
     """
     fetch the data that was processed in make data
     """
-    data = pd.read_csv(ROOT / data_path)
-    data_y = data.label
-    data_x = data.drop(['label'], axis=1)
+    app_train = pd.read_csv(ROOT / data_path)
+    y = app_train["TARGET"]
+    X = app_train.drop("TARGET", axis=1)
     
     # Create training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(data_x, data_y, 
-        test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.3, random_state=42)
+
     return X_train, X_test, y_train, y_test
 
 
-def fit_model(X_train, y_train):
-    """
-    fit a model to the training data
-    """
-    model = RandomForestClassifier(n_estimators=100)
+def preprocessor_create(num_features, cat_features):
+    preprocessor = ColumnTransformer([("numerical", "passthrough", num_features),
+    ("categorical", OneHotEncoder(sparse=False, handle_unknown='ignore'),
+    cat_features)])
+    return preprocessor
 
-    # Fit to the training data
-    model.fit(X_train, y_train)
-    return model
+def model_definition(num_features, cat_features):
+    app_train = pd.read_csv(ROOT/"data/raw/application_train.csv",nrows=1000)
+    y = app_train["TARGET"]
+    preprocessor = preprocessor_create(num_features, cat_features)
+    # XGBoost
+    xgb_model = Pipeline([("preprocessor", preprocessor),
+    # Add a scale_pos_weight to make it balanced
+    ("model", XGBClassifier(scale_pos_weight=(1 - y.mean()), n_jobs=-1))])
+
+    # Random Forest
+    rf_model = Pipeline([("preprocessor", preprocessor),
+    ("model", RandomForestClassifier(class_weight="balanced", n_estimators=100))])
+
+    #GradientBoostingClassifier
+    gb_model = Pipeline([("preprocessor", preprocessor),
+    ("model", GradientBoostingClassifier())])
+
+    return xgb_model,rf_model, gb_model
+
+
+def xgb_fit_model(X_train, y_train, xgb_model):
+    """
+    fit a xgb model to the training data
+    """
+    gs = GridSearchCV(xgb_model, {"model__max_depth": [5, 10],
+    "model__min_child_weight": [5, 10],
+    "model__n_estimators": [25]},
+    n_jobs=-1, cv=5, scoring="accuracy")
+    gs.fit(X_train, y_train)
+
+    print(gs.best_params_)
+    print(gs.best_score_)
+
+    xgb_model.set_params(**gs.best_params_)
+    xgb_model.fit(X_train, y_train)
+    return xgb_model
+
+def rf_fit_model(X_train, y_train, rf_model):
+    gs = GridSearchCV(rf_model, {"model__max_depth": [10, 15],
+    "model__min_samples_split": [5, 10]},
+    n_jobs=-1, cv=5, scoring="accuracy")
+    gs.fit(X_train, y_train)
+
+    print(gs.best_params_)
+    print(gs.best_score_)
+
+    rf_model.set_params(**gs.best_params_)
+    rf_model.fit(X_train, y_train)
+    return rf_model
+
+
+def gb_fit_model(X_train, y_train, gb_model):
+    gs = GridSearchCV(gb_model, {"model__max_depth": [10, 15],
+    "model__min_samples_split": [5, 10]},
+    n_jobs=-1, cv=5, scoring="accuracy")
+    gs.fit(X_train, y_train)
+
+    print(gs.best_params_)
+    print(gs.best_score_)
+
+    gb_model.set_params(**gs.best_params_)
+    gb_model.fit(X_train, y_train)
+    return gb_model
+
+
 
 
 def main():
     """ Trains the model on the retrieved data write it back to file
     """
-    x_train, x_test, y_train, y_test = fetch_processed('data/processed/transfusion_data.csv')
+    app_train = pd.read_csv(ROOT/"data/raw/application_train.csv",nrows=1000)
+    num_features, cat_features = get_features(app_train)
+    X_train, X_test, y_train, y_test = fetch_processed('data/processed/transfusion_data.csv')
     
-    # Train the model 
-    model = fit_model(x_train, y_train)
+    # Train the model
+    xgb_model, rf_model, gb_model = model_definition(num_features, cat_features)
+
+    xgb_model = xgb_fit_model(X_train, y_train, xgb_model)
+    rf_model = rf_fit_model(X_train, y_train, rf_model)
+    gb_model = gb_fit_model(X_train, y_train, gb_model)
+
     
     # Store model and test set for prediction
-    with open(ROOT / 'models/transfusion.model', 'wb') as fout:
-        pickle.dump(model, fout, PROTOCOL)
-    x_test.to_csv(ROOT / 'data/processed/transfusion_x_test.csv',
+    with open(ROOT / 'models/xgb_model.model', 'wb') as fout:
+        pickle.dump(xgb_model, fout, PROTOCOL)
+
+    with open(ROOT / 'models/rf_model.model', 'wb') as fout:
+        pickle.dump(rf_model, fout, PROTOCOL)
+
+    with open(ROOT / 'models/gb_model.model', 'wb') as fout:
+        pickle.dump(gb_model, fout, PROTOCOL)
+
+    X_test.to_csv(ROOT / 'data/processed/app_train_x_test.csv',
         index=False)
-    y_test.to_csv(ROOT / 'data/processed/transfusion_y_test.csv',
+    y_test.to_csv(ROOT / 'data/processed/app_train_y_test.csv',
         index=False)
+
+    print('oui')
 
 
 if __name__ == '__main__':

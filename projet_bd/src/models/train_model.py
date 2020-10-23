@@ -9,7 +9,7 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
-#from projet_bd.src.features import build_features
+# from cookiecutter.repo_name.src.features import build_features
 
 import importlib.util
 spec = importlib.util.spec_from_file_location("build_features", "./src/features/build_features.py")
@@ -130,6 +130,7 @@ def gb_fit_model(X_train, y_train, gb_model):
 
 
 def main():
+    print(ROOT)
     """ Trains the model on the retrieved data write it back to file
     """
     app_train = pd.read_csv(ROOT/"data/processed/application_train_processed.csv")

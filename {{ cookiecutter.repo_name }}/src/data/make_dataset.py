@@ -21,6 +21,7 @@ def main():
     #df = pd.read_csv(ROOT / 'data/raw/transfusion_data_raw.csv')
     #app_train = massage_data(df)
     app_train.to_csv(ROOT / 'data/processed/app_train.csv', index=False)
+    print("oui")
 
 
 if __name__ == '__main__':

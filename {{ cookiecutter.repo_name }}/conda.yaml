@@ -1,0 +1,5 @@
+name: application_of_bdd
+channels:
+  - conda-forge
+  - defaults
+prefix: C:\Users\nana-\anaconda3\envs\application_of_bdd\envs\application_of_bdd

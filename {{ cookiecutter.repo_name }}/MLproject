@@ -1,9 +1,9 @@
-name: train_le_model
+name: train_model
 
 conda_env: conda.yaml
 
 entry_points:
   main:
     parameters:
-      model: {type: string, default: 0.5}
+      model: {type: string}
     command: "python train_model.py {model} "

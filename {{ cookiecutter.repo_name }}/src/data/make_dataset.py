@@ -1,3 +1,11 @@
+"""
+    make_dataset.py
+    ----------------
+
+    This package read the original data from kaggle located in the data/raw directory
+    and write it into the data/processed
+    so we dont manipulate the original data
+"""
 import logging
 import pandas as pd
 from pathlib import Path
@@ -7,12 +15,19 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def main():
-    """ Retrieves data and runs processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
+    """ 
+        Retrieves data raw (../raw) into
+        data ready to be analyzed (saved in ../processed).
     """
     app_train = pd.read_csv(ROOT/"data/raw/application_train.csv",nrows=1000)
+    app_test = pd.read_csv(ROOT/"data/raw/application_test.csv",nrows=1000)
     
+
     app_train.to_csv(ROOT / 'data/processed/app_train.csv', index=False)
+    app_test.to_csv(ROOT / 'data/processed/app_test.csv', index=False)
+    
+
+
     
 
 

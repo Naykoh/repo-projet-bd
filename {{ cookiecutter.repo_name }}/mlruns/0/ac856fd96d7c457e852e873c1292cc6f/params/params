@@ -1,0 +1,2 @@
+RandomForestClassifier(class_weight='balanced', max_depth=10,
+                       min_samples_split=5)

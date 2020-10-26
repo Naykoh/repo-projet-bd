@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/nana-/repo%20projet%20bd/%7B%7B%20cookiecutter.repo_name%20%7D%7D/mlruns/0/dcea32d0ac24437e8c36703c8bf43a17/artifacts
+end_time: 1603639461301
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+name: ''
+run_id: dcea32d0ac24437e8c36703c8bf43a17
+run_uuid: dcea32d0ac24437e8c36703c8bf43a17
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1603639452561
+status: 3
+tags: []
+user_id: nana-

@@ -105,7 +105,7 @@ def xgb_fit_model(X_train, y_train, xgb_model):
     gs = GridSearchCV(xgb_model, {"model__max_depth": [5, 10],
     "model__min_child_weight": [5, 10],
     "model__n_estimators": [25]},
-    n_jobs=-1, cv=5, scoring="accuracy")
+    n_jobs=-1, cv=5, scoring="f1")
     gs.fit(X_train, y_train)
 
     print(gs.best_params_)
@@ -135,7 +135,7 @@ def rf_fit_model(X_train, y_train, rf_model):
     """
     gs = GridSearchCV(rf_model, {"model__max_depth": [10, 15],
     "model__min_samples_split": [5, 10]},
-    n_jobs=-1, cv=5, scoring="accuracy")
+    n_jobs=-1, cv=5, scoring="f1")
     gs.fit(X_train, y_train)
 
     print(gs.best_params_)
@@ -164,7 +164,7 @@ def gb_fit_model(X_train, y_train, gb_model):
     """
     gs = GridSearchCV(gb_model, {"model__max_depth": [10, 15],
     "model__min_samples_split": [5, 10]},
-    n_jobs=-1, cv=5, scoring="accuracy")
+    n_jobs=-1, cv=5, scoring="f1")
     gs.fit(X_train, y_train)
 
     print(gs.best_params_)

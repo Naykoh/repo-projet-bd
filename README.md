@@ -3,9 +3,9 @@
 ### Goals 
 The goal of this project is to apply some concepts & tools seen in the 3 parts of this course, this
 project is organized into 3 parts :
- Part 1 : Building Classical ML projects with respect to basic ML Coding best practices
- Part 2 : Integrate MLFlow to your project
- Part 3 : Integrate ML Interpretability to your project
+ Part 1 : Building Classical ML projects with respect to basic ML Coding best practices<br>
+ Part 2 : Integrate MLFlow to your project<br>
+ Part 3 : Integrate ML Interpretability to your project<br>
 ### DataSet (Finance use case)
 DataSet of Home Credit Risk Classification:
 https://www.kaggle.com/c/home-credit-default-risk/data<br>
@@ -36,6 +36,9 @@ The directory structure of the project looks like this:
 ├── notebooks          <- Jupyter notebooks.
 │
 │
+├── project_report     <- Report of the project
+│
+│
 ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
 │                         generated with `pip freeze > requirements.txt`
 │
@@ -62,14 +65,14 @@ The directory structure of the project looks like this:
 ### Project evaluation
 
 
--Report of your project 
+-Report of your project <br>
 	│
-	└──  project_report.pdf
+	└──  project_report.pdf<br>
 	
--Project code and resources (notebooks, scripts, conda env, GIT repository) 
+-Project code and resources (notebooks, scripts, conda env, GIT repository) <br>
 	│
-	└──  notebook : Project Application of BD.ipynb, scripts : src/, conda env : conda.yaml
+	└──  notebook : Project Application of BD.ipynb, scripts : src/, conda env : conda.yaml<br>
 	
--Project Outputs (predictions on test dataset, MLflow outputs, SHAP Outputs)
+-Project Outputs (predictions on test dataset, MLflow outputs, SHAP Outputs)<br>
 	│
-	└──  predictions on test dataset : data/result/, MLflow outputs in project_report, SHAP outputs in project_report and notebook
+	└──  predictions on test dataset : data/result/, MLflow outputs in project_report, SHAP outputs in project_report and notebook<br>

@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.features package &#8212; Home Credit Risk Classification  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-features-package">
+<h1>src.features package<a class="headerlink" href="#src-features-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.features.build_features">
+<span id="src-features-build-features-module"></span><h2>src.features.build_features module<a class="headerlink" href="#module-src.features.build_features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="build-features-py">
+<h3>build_features.py<a class="headerlink" href="#build-features-py" title="Permalink to this headline">¶</a></h3>
+<p>This package contains function to build features before doing machine learning on it</p>
+<dl class="py function">
+<dt id="src.features.build_features.dropna">
+<code class="sig-prename descclassname">src.features.build_features.</code><code class="sig-name descname">dropna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">num_features</span></em>, <em class="sig-param"><span class="n">cat_features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#dropna"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.features.build_features.dropna" title="Permalink to this definition">¶</a></dt>
+<dd><p>replace the NaN of the numerical features by the mean of this specific features, and drop the NaN for the categorical features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – dataframe, application_train/test</p></li>
+<li><p><strong>num_features</strong> (<em>List</em>) – list of the name of numerical features in the dataset</p></li>
+<li><p><strong>cat_features</strong> (<em>List</em>) – list of the name of categorical features in the dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame without NaN values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.features.build_features.feature_selection">
+<code class="sig-prename descclassname">src.features.build_features.</code><code class="sig-name descname">feature_selection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#feature_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.features.build_features.feature_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>selection of feature, intersection of 6 ways of feature selection <a class="reference external" href="https://www.kaggle.com/sz8416/6-ways-for-feature-selection">https://www.kaggle.com/sz8416/6-ways-for-feature-selection</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>DataFrame</em>) – datafarme to select features from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame with relevant features</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.features.build_features.get_features">
+<code class="sig-prename descclassname">src.features.build_features.</code><code class="sig-name descname">get_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_train</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#get_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.features.build_features.get_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>return 2 list of the name of categorical and numerical features of the dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app_train</strong> (<em>DataFrame</em>) – dataframe containing training data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Two lists of categorical and numerical features of the dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.features.build_features.main">
+<code class="sig-prename descclassname">src.features.build_features.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.features.build_features.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the raw dataset and process it(feature selection and handle Nan), processed dataset can be find at data/processed</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.features.build_features.preprocessor_create">
+<code class="sig-prename descclassname">src.features.build_features.</code><code class="sig-name descname">preprocessor_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_features</span></em>, <em class="sig-param"><span class="n">cat_features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#preprocessor_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.features.build_features.preprocessor_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a preprocessor that is useful to onehotencode the object features of the dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_features</strong> (<em>List</em>) – list of the name of numerical features in the dataset</p></li>
+<li><p><strong>cat_features</strong> (<em>List</em>) – list of the name of categorical features in the dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ColumnTransformer used for the onehotencoding of the categorical features</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-src.features">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.features" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Home Credit Risk Classification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Nayel HAMANI, Karthikeyan PAVADE.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.features.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

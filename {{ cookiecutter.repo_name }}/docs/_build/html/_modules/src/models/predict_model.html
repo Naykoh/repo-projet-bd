@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.models.predict_model &#8212; Home Credit Risk Classification  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.models.predict_model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    predict_model.py</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    :param model: &#39;xgb&#39;, &#39;rf&#39; or &#39;gb&#39;</span>
+<span class="sd">    :type model: String</span>
+
+<span class="sd">    This package contains function to predict application_test with 3 differents models</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="kn">import</span> <span class="nn">sys</span>      
+
+<span class="n">ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="retrieve_xgb_model"><a class="viewcode-back" href="../../../src.models.html#src.models.predict_model.retrieve_xgb_model">[docs]</a><span class="k">def</span> <span class="nf">retrieve_xgb_model</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        retrieve the pickled model object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pickled_model</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;models/xgb_model.model&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickled_model</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fin</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fin</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="retrieve_rf_model"><a class="viewcode-back" href="../../../src.models.html#src.models.predict_model.retrieve_rf_model">[docs]</a><span class="k">def</span> <span class="nf">retrieve_rf_model</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        retrieve the pickled model object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pickled_model</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;models/rf_model.model&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickled_model</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fin</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fin</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="retrieve_gb_model"><a class="viewcode-back" href="../../../src.models.html#src.models.predict_model.retrieve_gb_model">[docs]</a><span class="k">def</span> <span class="nf">retrieve_gb_model</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        retrieve the pickled model object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pickled_model</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;models/gb_model.model&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickled_model</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fin</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fin</span><span class="p">))</span></div>
+
+
+    
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../src.models.html#src.models.predict_model.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        retrieve the model and predict labels of application_test</span>
+
+<span class="sd">        :param model: model selected</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">app_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;data/processed/app_test_processed.csv&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">model</span><span class="o">==</span><span class="s1">&#39;xgb&#39;</span><span class="p">):</span>    
+        <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">retrieve_xgb_model</span><span class="p">()</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">app_test</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">model</span><span class="o">==</span><span class="s1">&#39;rf&#39;</span><span class="p">):</span>    
+        <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">retrieve_rf_model</span><span class="p">()</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">app_test</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">model</span><span class="o">==</span><span class="s1">&#39;gb&#39;</span><span class="p">):</span>    
+        <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">retrieve_gb_model</span><span class="p">()</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">app_test</span><span class="p">)</span>
+
+
+
+    <span class="c1">#predictions is the predictions of the model from application test</span>
+    <span class="n">writing_path</span> <span class="o">=</span> <span class="s2">&quot;data/result/app_test_&quot;</span><span class="o">+</span><span class="n">model</span><span class="o">+</span><span class="s2">&quot;_predictions.csv&quot;</span>
+    <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="n">writing_path</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">log_fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">log_fmt</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">model</span> <span class="o">!=</span> <span class="s1">&#39;xgb&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="n">model</span><span class="o">!=</span> <span class="s1">&#39;rf&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">model</span> <span class="o">!=</span> <span class="s1">&#39;gb&#39;</span><span class="p">))</span> <span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;unknown model, pass a model in argument among xgb, rf and gb&#39;</span><span class="p">)</span>
+                      
+    <span class="n">main</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Model : </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Home Credit Risk Classification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Nayel HAMANI, Karthikeyan PAVADE.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

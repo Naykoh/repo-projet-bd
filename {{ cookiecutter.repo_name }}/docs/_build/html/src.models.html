@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.models package &#8212; Home Credit Risk Classification  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-models-package">
+<h1>src.models package<a class="headerlink" href="#src-models-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.models.predict_model">
+<span id="src-models-predict-model-module"></span><h2>src.models.predict_model module<a class="headerlink" href="#module-src.models.predict_model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="predict-model-py">
+<h3>predict_model.py<a class="headerlink" href="#predict-model-py" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param model</dt>
+<dd class="field-odd"><p>‘xgb’, ‘rf’ or ‘gb’</p>
+</dd>
+<dt class="field-even">type model</dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p>This package contains function to predict application_test with 3 differents models</p>
+<dl class="py function">
+<dt id="src.models.predict_model.main">
+<code class="sig-prename descclassname">src.models.predict_model.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/predict_model.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.predict_model.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the model and predict labels of application_test</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – model selected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.predict_model.retrieve_gb_model">
+<code class="sig-prename descclassname">src.models.predict_model.</code><code class="sig-name descname">retrieve_gb_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/predict_model.html#retrieve_gb_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.predict_model.retrieve_gb_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the pickled model object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.predict_model.retrieve_rf_model">
+<code class="sig-prename descclassname">src.models.predict_model.</code><code class="sig-name descname">retrieve_rf_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/predict_model.html#retrieve_rf_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.predict_model.retrieve_rf_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the pickled model object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.predict_model.retrieve_xgb_model">
+<code class="sig-prename descclassname">src.models.predict_model.</code><code class="sig-name descname">retrieve_xgb_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/predict_model.html#retrieve_xgb_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.predict_model.retrieve_xgb_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the pickled model object</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-src.models.train_model">
+<span id="src-models-train-model-module"></span><h2>src.models.train_model module<a class="headerlink" href="#module-src.models.train_model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="train-model-py">
+<h3>train_model.py<a class="headerlink" href="#train-model-py" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param model</dt>
+<dd class="field-odd"><p>‘xgb’, ‘rf’ or ‘gb’</p>
+</dd>
+<dt class="field-even">type model</dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p>This package contains function to train 3 differents models, store them locally and on mlflow</p>
+<dl class="py function">
+<dt id="src.models.train_model.eval_metrics">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">eval_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">actual</span></em>, <em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">loaded_model</span></em>, <em class="sig-param"><span class="n">X_test</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#eval_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.eval_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>compare prediciton and actual value with different metrics to check the accuracy of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actual</strong> (<em>List</em>) – Actual value of the target feature of test set</p></li>
+<li><p><strong>pred</strong> (<em>List</em>) – Predictions of the target feature using the test set</p></li>
+<li><p><strong>loaded_model</strong> – model selected to check the metrics</p></li>
+<li><p><strong>X_test</strong> – useful to calculate auc score</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>auc, recall, precision, f1, matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.fetch_processed">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">fetch_processed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#fetch_processed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.fetch_processed" title="Permalink to this definition">¶</a></dt>
+<dd><p>fetch the data that was processed in make data and create training and test sets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_path</strong> (<em>String</em>) – location of the dataset</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>training and test sets</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>2 DataFrame, 2 List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.gb_fit_model">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">gb_fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">gb_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#gb_fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.gb_fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>fit a gradient boosting model to the training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>DataFrame</em>) – data used to train the model</p></li>
+<li><p><strong>y_train</strong> (<em>List</em>) – target feature</p></li>
+<li><p><strong>gb_model</strong> (<em>GradientBoostingClassifier</em>) – GradientBoostingClassifier model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>GradientBoostingClassifier fitted with gridsearchCV</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>GradientBoostingClassifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.main">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the model and test their accuracy on the retrieved data write it back to file and store the trained model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – model selected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.mlflow_train">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">mlflow_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">X_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">X_test</span></em>, <em class="sig-param"><span class="n">y_test</span></em>, <em class="sig-param"><span class="n">fit_function</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#mlflow_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.mlflow_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model and evaluate the accuracy of the model, model and metrics are saved on mlflow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – Model selected</p></li>
+<li><p><strong>fit_function</strong> – fit function depending on the selected model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.model_definition">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">model_definition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">preprocessor</span></em>, <em class="sig-param"><span class="n">app_train</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#model_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.model_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>define the 3 ML model, XGBoost Classifier, Random Forest Classifier, Gradient Boosting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>preprocessor</strong> (<em>ColumnTransformer</em>) – ColumnTransformer to handle onehotencoding</p></li>
+<li><p><strong>app_train</strong> – need the y.mean() to add a scale_pos_weight to make it balanced</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3 models of ML</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>XGBClassifier, RandomForestClassifier, GradientBoostingClassifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.rf_fit_model">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">rf_fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">rf_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#rf_fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.rf_fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>fit a random forest model to the training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>DataFrame</em>) – data used to train the model</p></li>
+<li><p><strong>y_train</strong> (<em>List</em>) – target feature</p></li>
+<li><p><strong>rf_model</strong> (<em>RandomForestClassifier</em>) – RandomForestClassifier model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>RandomForestClassifier fitted with gridsearchCV</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>RandomForestClassifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.models.train_model.xgb_fit_model">
+<code class="sig-prename descclassname">src.models.train_model.</code><code class="sig-name descname">xgb_fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">xgb_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/models/train_model.html#xgb_fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.models.train_model.xgb_fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>fit a xgb model to the training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>DataFrame</em>) – data used to train the model</p></li>
+<li><p><strong>y_train</strong> (<em>List</em>) – target feature</p></li>
+<li><p><strong>xgb_model</strong> (<em>XGBClassifier</em>) – XGBClassifier model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>XGBClassifier fitted with gridsearchCV</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>XGBClassifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-src.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.models" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Home Credit Risk Classification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Nayel HAMANI, Karthikeyan PAVADE.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

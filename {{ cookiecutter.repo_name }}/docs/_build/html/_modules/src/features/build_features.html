@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.features.build_features &#8212; Home Credit Risk Classification  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.features.build_features</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    build_features.py</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    This package contains function to build features before doing machine learning on it</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+
+<span class="n">ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<div class="viewcode-block" id="get_features"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.get_features">[docs]</a><span class="k">def</span> <span class="nf">get_features</span><span class="p">(</span><span class="n">app_train</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        return 2 list of the name of categorical and numerical features of the dataset</span>
+
+<span class="sd">        :param app_train: dataframe containing training data</span>
+<span class="sd">        :type app_train: DataFrame</span>
+
+<span class="sd">        :return: Two lists of categorical and numerical features of the dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_features</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">cat_features</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">app_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">app_train</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">num_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span> <span class="p">:</span> 
+            <span class="n">cat_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_features</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span></div>
+
+<div class="viewcode-block" id="preprocessor_create"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.preprocessor_create">[docs]</a><span class="k">def</span> <span class="nf">preprocessor_create</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        return a preprocessor that is useful to onehotencode the object features of the dataset</span>
+
+<span class="sd">        :param num_features: list of the name of numerical features in the dataset</span>
+<span class="sd">        :type num_features: List</span>
+
+<span class="sd">        :param cat_features: list of the name of categorical features in the dataset</span>
+<span class="sd">        :type cat_features: List</span>
+
+<span class="sd">        :return: ColumnTransformer used for the onehotencoding of the categorical features</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([(</span><span class="s2">&quot;numerical&quot;</span><span class="p">,</span> <span class="s2">&quot;passthrough&quot;</span><span class="p">,</span> <span class="n">num_features</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;categorical&quot;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">),</span>
+    <span class="n">cat_features</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">preprocessor</span></div>
+
+
+<div class="viewcode-block" id="dropna"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.dropna">[docs]</a><span class="k">def</span> <span class="nf">dropna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        replace the NaN of the numerical features by the mean of this specific features, and drop the NaN for the categorical features</span>
+
+<span class="sd">        :param df: dataframe, application_train/test</span>
+<span class="sd">        :type df: DataFrame</span>
+
+<span class="sd">        :param num_features: list of the name of numerical features in the dataset</span>
+<span class="sd">        :type num_features: List</span>
+
+<span class="sd">        :param cat_features: list of the name of categorical features in the dataset</span>
+<span class="sd">        :type cat_features: List</span>
+
+<span class="sd">        :return: DataFrame without NaN values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#replace every nan of numerical features by the mean of this feature</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">num_features</span><span class="p">:</span>    
+        <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()),</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="feature_selection"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.feature_selection">[docs]</a><span class="k">def</span> <span class="nf">feature_selection</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;  </span>
+<span class="sd">        selection of feature, intersection of 6 ways of feature selection https://www.kaggle.com/sz8416/6-ways-for-feature-selection</span>
+
+<span class="sd">        :param df: datafarme to select features from</span>
+<span class="sd">        :type df: DataFrame</span>
+
+<span class="sd">        :return: DataFrame with relevant features</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;TARGET&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>
+        <span class="n">feature_selected</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;TARGET&#39;</span><span class="p">,</span><span class="s1">&#39;AMT_CREDIT&#39;</span><span class="p">,</span><span class="s1">&#39;AMT_GOODS_PRICE&#39;</span><span class="p">,</span><span class="s1">&#39;APARTMENTS_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;CODE_GENDER&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_BIRTH&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_ID_PUBLISH&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_LAST_PHONE_CHANGE&#39;</span><span class="p">,</span><span class="s1">&#39;DEF_30_CNT_SOCIAL_CIRCLE&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_1&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_2&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_3&#39;</span><span class="p">,</span><span class="s1">&#39;FLAG_DOCUMENT_3&#39;</span><span class="p">,</span><span class="s1">&#39;FLAG_OWN_CAR&#39;</span><span class="p">,</span><span class="s1">&#39;FLOORSMAX_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;LIVE_CITY_NOT_WORK_CITY&#39;</span><span class="p">,</span><span class="s1">&#39;NAME_EDUCATION_TYPE&#39;</span><span class="p">,</span><span class="s1">&#39;NONLIVINGAREA_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;OBS_30_CNT_SOCIAL_CIRCLE&#39;</span><span class="p">,</span><span class="s1">&#39;REG_CITY_NOT_LIVE_CITY&#39;</span><span class="p">,</span><span class="s1">&#39;REG_CITY_NOT_WORK_CITY&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">feature_selected</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;AMT_CREDIT&#39;</span><span class="p">,</span><span class="s1">&#39;AMT_GOODS_PRICE&#39;</span><span class="p">,</span><span class="s1">&#39;APARTMENTS_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;CODE_GENDER&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_BIRTH&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_ID_PUBLISH&#39;</span><span class="p">,</span><span class="s1">&#39;DAYS_LAST_PHONE_CHANGE&#39;</span><span class="p">,</span><span class="s1">&#39;DEF_30_CNT_SOCIAL_CIRCLE&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_1&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_2&#39;</span><span class="p">,</span><span class="s1">&#39;EXT_SOURCE_3&#39;</span><span class="p">,</span><span class="s1">&#39;FLAG_DOCUMENT_3&#39;</span><span class="p">,</span><span class="s1">&#39;FLAG_OWN_CAR&#39;</span><span class="p">,</span><span class="s1">&#39;FLOORSMAX_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;LIVE_CITY_NOT_WORK_CITY&#39;</span><span class="p">,</span><span class="s1">&#39;NAME_EDUCATION_TYPE&#39;</span><span class="p">,</span><span class="s1">&#39;NONLIVINGAREA_MODE&#39;</span><span class="p">,</span><span class="s1">&#39;OBS_30_CNT_SOCIAL_CIRCLE&#39;</span><span class="p">,</span><span class="s1">&#39;REG_CITY_NOT_LIVE_CITY&#39;</span><span class="p">,</span><span class="s1">&#39;REG_CITY_NOT_WORK_CITY&#39;</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">feature_selected</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        retrieve the raw dataset and process it(feature selection and handle Nan), processed dataset can be find at data/processed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">app_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ROOT</span><span class="o">/</span><span class="s2">&quot;data/processed/app_train.csv&quot;</span><span class="p">)</span>
+    <span class="n">app_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ROOT</span><span class="o">/</span><span class="s2">&quot;data/processed/app_test.csv&quot;</span><span class="p">)</span>
+
+
+    <span class="c1">#selection of interesting features</span>
+    <span class="n">app_train</span> <span class="o">=</span> <span class="n">feature_selection</span><span class="p">(</span><span class="n">app_train</span><span class="p">)</span>
+    <span class="n">app_test</span> <span class="o">=</span> <span class="n">feature_selection</span><span class="p">(</span><span class="n">app_test</span><span class="p">)</span>
+
+    <span class="c1">#differentiate categorical and numerical features</span>
+    <span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span> <span class="o">=</span> <span class="n">get_features</span><span class="p">(</span><span class="n">app_train</span><span class="p">)</span>
+
+    <span class="c1">#handle NaN values</span>
+    <span class="n">dropna</span><span class="p">(</span><span class="n">app_train</span><span class="p">,</span> <span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span><span class="p">)</span>
+    <span class="n">dropna</span><span class="p">(</span><span class="n">app_test</span><span class="p">,</span> <span class="n">num_features</span><span class="p">,</span> <span class="n">cat_features</span><span class="p">)</span>
+
+    <span class="n">app_train</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;data/processed/app_train_processed.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">app_test</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="s1">&#39;data/processed/app_test_processed.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Home Credit Risk Classification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Nayel HAMANI, Karthikeyan PAVADE.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

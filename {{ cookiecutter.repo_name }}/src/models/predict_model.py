@@ -91,4 +91,4 @@ if __name__ == '__main__':
         raise NameError('unknown model, pass a model in argument among xgb, rf and gb')
                       
     main(model)
-    logging.info('Model : {}'.format(model))
+    logging.info('Predictions done with : {}'.format(model))

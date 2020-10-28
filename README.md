@@ -1,45 +1,27 @@
-# Cookiecutter Data Science
+# Home Credit Risk Classification
 
-_A logical, reasonably standardized, but flexible project structure for doing and sharing data science work._
-
-
-#### [Project homepage](http://drivendata.github.io/cookiecutter-data-science/)
-
-
-### Requirements to use the cookiecutter template:
------------
- - Python 2.7 or 3.5
- - [Cookiecutter Python package](http://cookiecutter.readthedocs.org/en/latest/installation.html) >= 1.4.0: This can be installed with pip by or conda depending on how you manage your Python packages:
-
-``` bash
-$ pip install cookiecutter
-```
-
-or
-
-``` bash
-$ conda config --add channels conda-forge
-$ conda install cookiecutter
-```
+### Goals 
+The goal of this project is to apply some concepts & tools seen in the 3 parts of this course, this
+project is organized into 3 parts :
+ Part 1 : Building Classical ML projects with respect to basic ML Coding best practices
+ Part 2 : Integrate MLFlow to your project
+ Part 3 : Integrate ML Interpretability to your project
+### DataSet (Finance use case)
+DataSet of Home Credit Risk Classification:
+https://www.kaggle.com/c/home-credit-default-risk/data<br>
+you'll not use all the datasets available on Kaggle, only the main data set :
+application_train.csv
+application_test.csv
 
 
-### To start a new project, run:
-------------
-
-    cookiecutter https://github.com/drivendata/cookiecutter-data-science
+#### Cookiecutter Data Science(http://drivendata.github.io/cookiecutter-data-science/)
 
 
-[![asciicast](https://asciinema.org/a/9bgl5qh17wlop4xyxu9n9wr02.png)](https://asciinema.org/a/9bgl5qh17wlop4xyxu9n9wr02)
 
-
-### The resulting directory structure
-------------
-
-The directory structure of your new project looks like this: 
+The directory structure of the project looks like this: 
 
 ```
 ├── LICENSE
-├── Makefile           <- Makefile with commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
 ├── data
 │   ├── external       <- Data from third party sources.
@@ -51,14 +33,8 @@ The directory structure of your new project looks like this:
 │
 ├── models             <- Trained and serialized models, model predictions, or model summaries
 │
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
+├── notebooks          <- Jupyter notebooks.
 │
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
 │
 ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
 │                         generated with `pip freeze > requirements.txt`
@@ -77,22 +53,23 @@ The directory structure of your new project looks like this:
 │   │   ├── predict_model.py
 │   │   └── train_model.py
 │   │
-│   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-│       └── visualize.py
+│   └── api_request  <- Scripts to request the API created by mlflow
+│       └── api-request.py
 │
 └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
 ```
 
-## Contributing
+### Project evaluation
 
-We welcome contributions! [See the docs for guidelines](https://drivendata.github.io/cookiecutter-data-science/#contributing).
 
-### Installing development requirements
-------------
-
-    pip install -r requirements.txt
-
-### Running the tests
-------------
-
-    py.test tests
+-Report of your project 
+	│
+	└──  project_report.pdf
+	
+-Project code and resources (notebooks, scripts, conda env, GIT repository) 
+	│
+	└──  notebook : Project Application of BD.ipynb, scripts : src/, conda env : conda.yaml
+	
+-Project Outputs (predictions on test dataset, MLflow outputs, SHAP Outputs)
+	│
+	└──  predictions on test dataset : data/result/, MLflow outputs in project_report, SHAP outputs in project_report and notebook
